@@ -33,7 +33,9 @@ private slots:
 
     void on_btn_modificar_clicked();
 
-    void on_btn_procesarDatos_clicked();
+    void on_btn_guardarDatos_clicked();
+
+    void on_btn_procesar_clicked();
 
 private:
     Ui::MainWindow *ui;

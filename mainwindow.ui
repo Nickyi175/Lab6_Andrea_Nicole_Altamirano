@@ -76,7 +76,7 @@
        <string>Registro de Notas</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_3">
@@ -143,7 +143,7 @@
        <string>Registro de Productos</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLineEdit" name="lE_codigo">
@@ -293,34 +293,34 @@
        <string>Listado de Productos</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
-      <string>Page</string>
+      <string>Registro de Datos</string>
      </attribute>
      <widget class="QPushButton" name="btn_guardarDatos">
       <property name="geometry">
        <rect>
-        <x>510</x>
-        <y>410</y>
+        <x>320</x>
+        <y>430</y>
         <width>83</width>
         <height>29</height>
        </rect>
       </property>
       <property name="text">
-       <string>Actualizar</string>
+       <string>Guardar</string>
       </property>
      </widget>
      <widget class="QTextEdit" name="te_calculos">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>130</y>
+        <x>450</x>
+        <y>260</y>
         <width>291</width>
-        <height>261</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="readOnly">
@@ -330,17 +330,17 @@
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>100</y>
+        <x>500</x>
+        <y>230</y>
         <width>181</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Listado de Productos</string>
+       <string>Resultado</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_15">
@@ -360,19 +360,19 @@
        </font>
       </property>
       <property name="text">
-       <string>Registro de Productos</string>
+       <string>Registro de Datos</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QTextEdit" name="te_sinCalcular">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>190</y>
+        <x>450</x>
+        <y>130</y>
         <width>291</width>
-        <height>261</height>
+        <height>91</height>
        </rect>
       </property>
       <property name="readOnly">
@@ -405,7 +405,7 @@
        <string>Nombre</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lE_codigo_3">
+     <widget class="QLineEdit" name="lE_nombre">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -415,14 +415,141 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lE_nombreProducto_3">
+     <widget class="QSpinBox" name="spinBox_edad">
       <property name="geometry">
        <rect>
         <x>50</x>
         <y>200</y>
-        <width>221</width>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_29">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>170</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Salario Mensual  (Lps.)</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_salario">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>200</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <double>99999999.989999994635582</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_30">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>330</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Nacionalidad</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_nacionalidad">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>360</y>
+        <width>231</width>
         <height>28</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_31">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>400</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Puesto Laboral</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_puestoLaboral">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>430</y>
+        <width>231</width>
+        <height>28</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_32">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>260</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Id</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lE_id">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>290</y>
+        <width>231</width>
+        <height>28</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_procesar">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>420</y>
+        <width>83</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Procesar</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>100</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Datos sin procesar</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>

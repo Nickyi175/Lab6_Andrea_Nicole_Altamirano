@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
     QIntValidator *validator = new QIntValidator(0, 1000000, this);
     ui->lE_codigo->setValidator(validator);
     crearArchivoTexto("datos.txt");
+    QIntValidator *validator = new QIntValidator(0, 1000000, this);
+    ui->lE_id->setValidator(validator);
+
 }
 
 MainWindow::~MainWindow()
@@ -471,7 +474,7 @@ void MainWindow::mostrarDatos(const QVector<QStringList>& datos) {
 
 void MainWindow::mostrarEstadisticas(double promedioSalario, int conteoEdad45, int conteoEdad60, const QVector<QString>& nacionalidades, const QVector<int>& conteosNacionalidad, const QVector<QString>& puestos, const QVector<int>& conteosPuesto) {
     QString contenido;
-    contenido += QString("Promedio de Salario: %.2f\n").arg(promedioSalario);
+    contenido += QString("Promedio de Salario: Lps. "+QString::number(promedioSalario)+"\n");
     contenido += QString("Cantidad de personas mayores o iguales a 45 años: %1\n").arg(conteoEdad45);
     contenido += QString("Cantidad de personas mayores o iguales a 60 años: %1\n").arg(conteoEdad60);
     contenido += "Cantidad de personas por nacionalidad:\n";
@@ -484,3 +487,58 @@ void MainWindow::mostrarEstadisticas(double promedioSalario, int conteoEdad45, i
     }
     ui->te_calculos->setPlainText(contenido);
 }
+
+void MainWindow::on_btn_guardarDatos_clicked()
+{
+    QString nombre = ui->lE_nombre->text();
+    int edad = ui->spinBox_edad->text().toInt();
+    double salario = ui->doubleSpinBox_salario->text().toDouble();
+    QString nacionalidad = ui->lE_nacionalidad->text();
+    QString puesto = ui->lE_puestoLaboral->text();
+    int id = ui->lE_id->text().toInt();
+
+    QFile archivo("datos.txt");
+    if (!archivo.open(QIODevice::Append)) {
+        QMessageBox::warning(this, "Error", "No se pudo abrir el archivo para agregar datos.");
+        return;
+    }
+
+    QTextStream stream(&archivo);
+    stream << nombre << " " << edad << " " << salario << " " << nacionalidad << " " << puesto << " " << id << "\n";
+    archivo.close();
+
+    QVector<QStringList> datos = leerArchivoTexto("datos.txt");
+    mostrarDatos(datos);
+}
+
+
+void MainWindow::on_btn_procesar_clicked()
+{
+    QVector<QStringList> datos = leerArchivoTexto("datos.txt");
+
+    if (datos.isEmpty()) {
+        ui->te_calculos->setPlainText("No se encontraron datos para procesar.");
+        return;
+    }
+
+    double promedioSalario = calcularPromedioSalario(datos);
+    int conteoEdad45 = contarRegistrosEdadMayorA(datos, 45);
+    int conteoEdad60 = contarRegistrosEdadMayorA(datos, 60);
+
+    QVector<QString> nacionalidades = obtenerNacionalidadesUnicas(datos);
+    QVector<QString> puestos = obtenerPuestosUnicos(datos);
+
+    QVector<int> conteosNacionalidad;
+    QVector<int> conteosPuesto;
+
+    for (const QString& nacionalidad : nacionalidades) {
+        conteosNacionalidad.append(contarPorNacionalidad(datos, nacionalidad));
+    }
+
+    for (const QString& puesto : puestos) {
+        conteosPuesto.append(contarPorPuesto(datos, puesto));
+    }
+
+    mostrarEstadisticas(promedioSalario, conteoEdad45, conteoEdad60, nacionalidades, conteosNacionalidad, puestos, conteosPuesto);
+}
+
