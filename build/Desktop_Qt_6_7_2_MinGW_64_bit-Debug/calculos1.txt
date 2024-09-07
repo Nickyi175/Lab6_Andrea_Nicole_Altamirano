@@ -1,0 +1,7 @@
+Promedio de Salario: Lps. 2345
+Cantidad de personas mayores o iguales a 45 años: 1
+Cantidad de personas mayores o iguales a 60 años: 1
+Cantidad de personas por nacionalidad:
+hondureña: 2
+Cantidad de personas por puesto laboral:
+ingeniera: 2

@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     mostrarProductos();
     QIntValidator *validator = new QIntValidator(0, 1000000, this);
     ui->lE_codigo->setValidator(validator);
-    crearArchivoTexto("datos.txt");
-    QIntValidator *validator = new QIntValidator(0, 1000000, this);
     ui->lE_id->setValidator(validator);
 
 }
@@ -352,193 +350,153 @@ void MainWindow::on_btn_modificar_clicked()
     file.close();
 
     if (!encontrado) {
-        ui->tE_productos->append("Código no encontrado para actualización.");
+        ui->tE_productos->append("Código no encontrado");
     }
 }
 
-void MainWindow::crearArchivoTexto(const QString& nombreArchivo) {
-    QFile archivo(nombreArchivo);
-
-    if (!archivo.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this, "Error", "No se pudo crear el archivo.");
-        return;
-    }
-
-    QTextStream stream(&archivo);
-    stream << "Nombre Edad Salario Nacionalidad Puesto Identidad\n";  // Encabezado
-    archivo.close();
-
-    ui->te_sinCalcular->setPlainText("Archivo de texto creado automáticamente.\n");
-}
-
-QVector<QStringList> MainWindow::leerArchivoTexto(const QString& nombreArchivo) {
-    QFile archivo(nombreArchivo);
-    QVector<QStringList> datos;
-
-    if (!archivo.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, "Error", "No se pudo abrir el archivo.");
-        return datos;
-    }
-
-    QTextStream stream(&archivo);
-    QString linea = stream.readLine(); // Leer y descartar la cabecera
-    while (!stream.atEnd()) {
-        linea = stream.readLine();
-        QStringList campos = linea.split(' ');
-        datos.append(campos);
-    }
-
-    archivo.close();
-    return datos;
-}
-
-double MainWindow::calcularPromedioSalario(const QVector<QStringList>& datos) {
-    double suma = 0.0;
-    int cantidad = 0;
-
-    for (int i = 1; i < datos.size(); ++i) { // Empezamos en 1 para omitir la cabecera
-        double salario = datos[i][2].toDouble();
-        suma += salario;
-        cantidad++;
-    }
-
-    return cantidad == 0 ? 0.0 : suma / cantidad;
-}
-
-int MainWindow::contarRegistrosEdadMayorA(const QVector<QStringList>& datos, int edadMinima) {
-    int conteo = 0;
-
-    for (int i = 1; i < datos.size(); ++i) {
-        int edad = datos[i][1].toInt();
-        if (edad >= edadMinima) {
-            conteo++;
-        }
-    }
-
-    return conteo;
-}
-
-QVector<QString> MainWindow::obtenerNacionalidadesUnicas(const QVector<QStringList>& datos) {
-    QVector<QString> nacionalidades;
-    for (int i = 1; i < datos.size(); ++i) {
-        QString nacionalidad = datos[i][3];
-        if (!nacionalidades.contains(nacionalidad)) {
-            nacionalidades.append(nacionalidad);
-        }
-    }
-    return nacionalidades;
-}
-
-QVector<QString> MainWindow::obtenerPuestosUnicos(const QVector<QStringList>& datos) {
-    QVector<QString> puestos;
-    for (int i = 1; i < datos.size(); ++i) {
-        QString puesto = datos[i][4];
-        if (!puestos.contains(puesto)) {
-            puestos.append(puesto);
-        }
-    }
-    return puestos;
-}
-
-int MainWindow::contarPorNacionalidad(const QVector<QStringList>& datos, const QString& nacionalidad) {
-    int conteo = 0;
-
-    for (int i = 1; i < datos.size(); ++i) {
-        if (datos[i][3] == nacionalidad) {
-            conteo++;
-        }
-    }
-
-    return conteo;
-}
-
-int MainWindow::contarPorPuesto(const QVector<QStringList>& datos, const QString& puesto) {
-    int conteo = 0;
-
-    for (int i = 1; i < datos.size(); ++i) {
-        if (datos[i][4] == puesto) {
-            conteo++;
-        }
-    }
-
-    return conteo;
-}
-
-void MainWindow::mostrarDatos(const QVector<QStringList>& datos) {
-    QString contenido;
-    for (const QStringList& linea : datos) {
-        contenido += linea.join(' ') + "\n";
-    }
-    ui->te_sinCalcular->setPlainText(contenido);
-}
-
-void MainWindow::mostrarEstadisticas(double promedioSalario, int conteoEdad45, int conteoEdad60, const QVector<QString>& nacionalidades, const QVector<int>& conteosNacionalidad, const QVector<QString>& puestos, const QVector<int>& conteosPuesto) {
-    QString contenido;
-    contenido += QString("Promedio de Salario: Lps. "+QString::number(promedioSalario)+"\n");
-    contenido += QString("Cantidad de personas mayores o iguales a 45 años: %1\n").arg(conteoEdad45);
-    contenido += QString("Cantidad de personas mayores o iguales a 60 años: %1\n").arg(conteoEdad60);
-    contenido += "Cantidad de personas por nacionalidad:\n";
-    for (int i = 0; i < nacionalidades.size(); ++i) {
-        contenido += QString("%1: %2\n").arg(nacionalidades[i]).arg(conteosNacionalidad[i]);
-    }
-    contenido += "Cantidad de personas por puesto laboral:\n";
-    for (int i = 0; i < puestos.size(); ++i) {
-        contenido += QString("%1: %2\n").arg(puestos[i]).arg(conteosPuesto[i]);
-    }
-    ui->te_calculos->setPlainText(contenido);
-}
-
+//EJERCICIO 3
 void MainWindow::on_btn_guardarDatos_clicked()
 {
-    QString nombre = ui->lE_nombre->text();
-    int edad = ui->spinBox_edad->text().toInt();
-    double salario = ui->doubleSpinBox_salario->text().toDouble();
-    QString nacionalidad = ui->lE_nacionalidad->text();
-    QString puesto = ui->lE_puestoLaboral->text();
+    QStringList empleado;
     int id = ui->lE_id->text().toInt();
+    empleado << ui->lE_nombre->text()
+             << QString::number(ui->spinBox_edad->value())
+             << QString::number(ui->doubleSpinBox_salario->value())
+             << QString::number(ui->spinBox_years->value())
+             << QString::number(ui->spinBox_horasSemanal->value())
+             << QString::number(ui->spinBox_rendimiento->value())
+             << QString::number(id);
 
-    QFile archivo("datos.txt");
-    if (!archivo.open(QIODevice::Append)) {
-        QMessageBox::warning(this, "Error", "No se pudo abrir el archivo para agregar datos.");
+    if (verificarIdExistente(id)) {
+        QMessageBox::warning(this, "Error", "El ID ya existe");
         return;
     }
-
-    QTextStream stream(&archivo);
-    stream << nombre << " " << edad << " " << salario << " " << nacionalidad << " " << puesto << " " << id << "\n";
-    archivo.close();
-
-    QVector<QStringList> datos = leerArchivoTexto("datos.txt");
-    mostrarDatos(datos);
+    guardarDatosEnArchivo(empleado);
+    datos.append(empleado);
+    mostrarDatosEnTextEdit();
+    realizarCalculos();
 }
 
-
-void MainWindow::on_btn_procesar_clicked()
+bool MainWindow::verificarIdExistente(int id)
 {
-    QVector<QStringList> datos = leerArchivoTexto("datos.txt");
-
-    if (datos.isEmpty()) {
-        ui->te_calculos->setPlainText("No se encontraron datos para procesar.");
-        return;
+    for (const QStringList &empleado : datos) {
+        if (empleado[6].toInt() == id) {
+            return true;
+        }
     }
-
-    double promedioSalario = calcularPromedioSalario(datos);
-    int conteoEdad45 = contarRegistrosEdadMayorA(datos, 45);
-    int conteoEdad60 = contarRegistrosEdadMayorA(datos, 60);
-
-    QVector<QString> nacionalidades = obtenerNacionalidadesUnicas(datos);
-    QVector<QString> puestos = obtenerPuestosUnicos(datos);
-
-    QVector<int> conteosNacionalidad;
-    QVector<int> conteosPuesto;
-
-    for (const QString& nacionalidad : nacionalidades) {
-        conteosNacionalidad.append(contarPorNacionalidad(datos, nacionalidad));
-    }
-
-    for (const QString& puesto : puestos) {
-        conteosPuesto.append(contarPorPuesto(datos, puesto));
-    }
-
-    mostrarEstadisticas(promedioSalario, conteoEdad45, conteoEdad60, nacionalidades, conteosNacionalidad, puestos, conteosPuesto);
+    return false;
 }
 
+void MainWindow::guardarDatosEnArchivo(const QStringList &empleado)
+{
+    QFile file("datos.txt");
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << empleado.join(",") << "\n";
+        file.close();
+    }
+}
+
+void MainWindow::mostrarDatosEnTextEdit()
+{
+    ui->te_sinCalcular->clear();
+    for (const QStringList &empleado : datos) {
+        ui->te_sinCalcular->append(empleado.join(", "));
+    }
+}
+
+void MainWindow::realizarCalculos()
+{
+    QString empleadoMasHoras, empleadoMenosHoras;
+    int conteoEdad45 = contarEdadMayorOIgualA(datos, 45);
+    int conteoEdad60 = contarEdadMayorOIgualA(datos, 60);
+    QString empleadoMasAntiguo, empleadoMenosAntiguo;
+    double totalPagoSemanal = calcularTotalPagoSemanal(datos);
+
+    calcularHorasExtremos(datos, empleadoMasHoras, empleadoMenosHoras);
+    calcularAntiguedadExtremos(datos, empleadoMasAntiguo, empleadoMenosAntiguo);
+
+    guardarCalculosEnBinario(empleadoMasHoras, empleadoMenosHoras, conteoEdad45, conteoEdad60,
+                             empleadoMasAntiguo, empleadoMenosAntiguo, totalPagoSemanal);
+
+    ui->te_calculos->clear();
+    ui->te_calculos->append("Empleado con más horas trabajadas: " + empleadoMasHoras);
+    ui->te_calculos->append("Empleado con menos horas trabajadas: " + empleadoMenosHoras);
+    ui->te_calculos->append("Empleados de 45 años o más: " + QString::number(conteoEdad45));
+    ui->te_calculos->append("Empleados de 60 años o más: " + QString::number(conteoEdad60));
+    ui->te_calculos->append("Empleado con más antigüedad: " + empleadoMasAntiguo);
+    ui->te_calculos->append("Empleado con menos antigüedad: " + empleadoMenosAntiguo);
+    ui->te_calculos->append("Total pagado semanalmente: " + QString::number(totalPagoSemanal));
+}
+
+void MainWindow::calcularHorasExtremos(const QVector<QStringList> &datos, QString &empleadoMasHoras, QString &empleadoMenosHoras)
+{
+    if (datos.isEmpty()) return;
+
+    int maxHoras = -1, minHoras = INT_MAX;
+    for (const QStringList &empleado : datos) {
+        int horas = empleado[4].toInt();
+        if (horas > maxHoras) {
+            maxHoras = horas;
+            empleadoMasHoras = empleado[0];
+        }
+        if (horas < minHoras) {
+            minHoras = horas;
+            empleadoMenosHoras = empleado[0];
+        }
+    }
+}
+
+int MainWindow::contarEdadMayorOIgualA(const QVector<QStringList> &datos, int edadLimite)
+{
+    int conteo = 0;
+    for (const QStringList &empleado : datos) {
+        int edad = empleado[1].toInt();
+        if (edad >= edadLimite) {
+            conteo++;
+        }
+    }
+    return conteo;
+}
+
+void MainWindow::calcularAntiguedadExtremos(const QVector<QStringList> &datos, QString &empleadoMasAntiguo, QString &empleadoMenosAntiguo)
+{
+    if (datos.isEmpty()) return;
+
+    int maxAntiguedad = -1, minAntiguedad = INT_MAX;
+    for (const QStringList &empleado : datos) {
+        int antiguedad = empleado[3].toInt();
+        if (antiguedad > maxAntiguedad) {
+            maxAntiguedad = antiguedad;
+            empleadoMasAntiguo = empleado[0];
+        }
+        if (antiguedad < minAntiguedad) {
+            minAntiguedad = antiguedad;
+            empleadoMenosAntiguo = empleado[0];
+        }
+    }
+}
+
+double MainWindow::calcularTotalPagoSemanal(const QVector<QStringList> &datos)
+{
+    double total = 0;
+    for (const QStringList &empleado : datos) {
+        double salario = empleado[2].toDouble();
+        total += salario;
+    }
+    return total;
+}
+
+void MainWindow::guardarCalculosEnBinario(const QString &empleadoMasHoras, const QString &empleadoMenosHoras,
+                                          int conteoEdad45, int conteoEdad60,
+                                          const QString &empleadoMasAntiguo, const QString &empleadoMenosAntiguo,
+                                          double totalPagoSemanal)
+{
+    QFile file("calculos.dat");
+    if (file.open(QIODevice::WriteOnly)) {
+        QDataStream out(&file);
+        out << empleadoMasHoras << empleadoMenosHoras << conteoEdad45 << conteoEdad60
+            << empleadoMasAntiguo << empleadoMenosAntiguo << totalPagoSemanal;
+        file.close();
+    }
+}
