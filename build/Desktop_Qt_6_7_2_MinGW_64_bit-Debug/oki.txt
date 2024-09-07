@@ -1,0 +1,4 @@
+Promedio Salario: 53750
+Cantidad de Registros con Edad Mayor a 30: 2
+Cantidad de Registros con Nacionalidad Española: 0
+Cantidad de Registros con Puesto de Ingeniero: 0

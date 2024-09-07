@@ -1,0 +1,6 @@
+Nombre Edad Salario Nacionalidad Puesto Identidad
+Juan 28 45000 Española Ingeniero 12345
+Ana 34 55000 Colombiana Diseñadora 67890
+Luis 40 60000 Mexicana Manager 11223
+Marta 22 30000 Chilena Asistente 44556
+Pedro 30 70000 Argentina Desarrollador 78901
